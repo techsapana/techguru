@@ -92,12 +92,6 @@ export default function AdminLogin() {
 
         <div className="text-center space-y-2">
           <Link
-            href="/admin/register"
-            className="text-blue-600 hover:text-blue-800 text-sm block"
-          >
-            Don't have an account? Register
-          </Link>
-          <Link
             href="/admin/forgot-password"
             className="text-blue-600 hover:text-blue-800 text-sm block w-full"
           >
