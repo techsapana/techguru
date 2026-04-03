@@ -9,6 +9,7 @@ import Image from "next/image";
 interface Partner {
   id: number;
   imageUrl: string;
+  description?: string;
 }
 
 const API_URL = `${DOMAIN}/api/admin/partners`;
@@ -18,6 +19,7 @@ export default function AdminPartners() {
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<Partner | null>(null);
   const [image, setImage] = useState<File | null>(null);
+  const [description, setDescription] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
@@ -55,6 +57,7 @@ export default function AdminPartners() {
 
     const formData = new FormData();
     formData.append("image", image);
+    formData.append("description", description);
 
     try {
       setSubmitting(true);
@@ -77,6 +80,7 @@ export default function AdminPartners() {
 
       alert("Success!");
       setImage(null);
+      setDescription("");
       setSelected(null);
       fetchPartners();
     } catch (err) {
@@ -103,6 +107,7 @@ export default function AdminPartners() {
 
   const handleEdit = (p: Partner) => {
     setSelected(p);
+    setDescription(p.description || "");
   };
 
   return (
@@ -127,6 +132,14 @@ export default function AdminPartners() {
                 type="file"
                 onChange={handleFileChange}
                 className="border-2 border-gray-300 p-2 w-full rounded"
+              />
+
+              <textarea
+                placeholder="Partner Description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className="w-full border-2 border-gray-300 p-2 rounded mt-4 h-24 resize-none"
+                rows={3}
               />
 
               {image && (
@@ -155,6 +168,7 @@ export default function AdminPartners() {
                     onClick={() => {
                       setSelected(null);
                       setImage(null);
+                      setDescription("");
                     }}
                     className="flex-1 bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded font-semibold"
                   >
@@ -190,6 +204,12 @@ export default function AdminPartners() {
                       width={70}
                       className="w-full h-24 object-contain mb-3"
                     />
+
+                    {p.description && (
+                      <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                        {p.description}
+                      </p>
+                    )}
 
                     <div className="flex gap-2">
                       <button

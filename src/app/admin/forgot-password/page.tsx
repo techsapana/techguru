@@ -4,48 +4,36 @@ import { DOMAIN } from "@/src/env";
 import { useState } from "react";
 import Link from "next/link";
 
-export default function AdminLogin() {
+export default function AdminForgotPassword() {
   const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setMessage("");
 
     try {
-      const res = await fetch(`${DOMAIN}/api/auth/login`, {
+      const res = await fetch(`${DOMAIN}/api/auth/forgot-password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username }),
       });
 
       const result = await res.json();
 
       if (!res.ok || !result.success) {
-        alert(result.message || "Login failed");
+        setMessage(result.message || "Failed to process request");
         return;
       }
 
-      const token = result.data;
-      const expires = new Date();
-      expires.setDate(expires.getDate() + 1);
-
-      const cookie = [
-        `adminToken=${token}`,
-        "path=/",
-        `expires=${expires.toUTCString()}`,
-        "SameSite=Lax",
-      ].join("; ");
-
-      document.cookie = cookie;
-
-      window.location.href = "/admin/dashboard";
+      setMessage("Password reset instructions have been sent to your email if the account exists.");
     } catch (error) {
-      alert(
-        "Something went wrong during login: " +
+      setMessage(
+        "Something went wrong: " +
           (error instanceof Error ? error.message : String(error)),
       );
       console.error(error);
@@ -61,8 +49,22 @@ export default function AdminLogin() {
         className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm space-y-4"
       >
         <h1 className="text-2xl font-semibold text-center text-black">
-          Admin Login
+          Forgot Password
         </h1>
+
+        <p className="text-sm text-gray-600 text-center">
+          Enter your username to receive password reset instructions.
+        </p>
+
+        {message && (
+          <div className={`p-3 rounded text-sm text-center ${
+            message.includes("sent") 
+              ? "bg-green-100 text-green-700" 
+              : "bg-red-100 text-red-700"
+          }`}>
+            {message}
+          </div>
+        )}
 
         <input
           type="text"
@@ -73,35 +75,20 @@ export default function AdminLogin() {
           required
         />
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full border border-gray-300 text-black rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          required
-        />
-
         <button
           type="submit"
           disabled={loading}
           className="cursor-pointer w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition disabled:opacity-60"
         >
-          {loading ? "Signing in..." : "Login"}
+          {loading ? "Sending..." : "Send Reset Instructions"}
         </button>
 
         <div className="text-center space-y-2">
           <Link
-            href="/admin/register"
+            href="/admin/login"
             className="text-blue-600 hover:text-blue-800 text-sm block"
           >
-            Don't have an account? Register
-          </Link>
-          <Link
-            href="/admin/forgot-password"
-            className="text-blue-600 hover:text-blue-800 text-sm block w-full"
-          >
-            Forgot Password?
+            Back to Login
           </Link>
         </div>
       </form>

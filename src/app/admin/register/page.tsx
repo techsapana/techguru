@@ -4,17 +4,30 @@ import { DOMAIN } from "@/src/env";
 import { useState } from "react";
 import Link from "next/link";
 
-export default function AdminLogin() {
+export default function AdminRegister() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
+    if (password !== confirmPassword) {
+      alert("Passwords do not match");
+      setLoading(false);
+      return;
+    }
+
+    if (password.length < 6) {
+      alert("Password must be at least 6 characters long");
+      setLoading(false);
+      return;
+    }
+
     try {
-      const res = await fetch(`${DOMAIN}/api/auth/login`, {
+      const res = await fetch(`${DOMAIN}/api/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -25,27 +38,15 @@ export default function AdminLogin() {
       const result = await res.json();
 
       if (!res.ok || !result.success) {
-        alert(result.message || "Login failed");
+        alert(result.message || "Registration failed");
         return;
       }
 
-      const token = result.data;
-      const expires = new Date();
-      expires.setDate(expires.getDate() + 1);
-
-      const cookie = [
-        `adminToken=${token}`,
-        "path=/",
-        `expires=${expires.toUTCString()}`,
-        "SameSite=Lax",
-      ].join("; ");
-
-      document.cookie = cookie;
-
-      window.location.href = "/admin/dashboard";
+      alert("Admin registration successful! You can now login.");
+      window.location.href = "/admin/login";
     } catch (error) {
       alert(
-        "Something went wrong during login: " +
+        "Something went wrong during registration: " +
           (error instanceof Error ? error.message : String(error)),
       );
       console.error(error);
@@ -61,7 +62,7 @@ export default function AdminLogin() {
         className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm space-y-4"
       >
         <h1 className="text-2xl font-semibold text-center text-black">
-          Admin Login
+          Admin Registration
         </h1>
 
         <input
@@ -71,6 +72,8 @@ export default function AdminLogin() {
           onChange={(e) => setUsername(e.target.value)}
           className="w-full border border-gray-300 text-black rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
+          minLength={3}
+          maxLength={50}
         />
 
         <input
@@ -80,6 +83,17 @@ export default function AdminLogin() {
           onChange={(e) => setPassword(e.target.value)}
           className="w-full border border-gray-300 text-black rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
+          minLength={6}
+        />
+
+        <input
+          type="password"
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          className="w-full border border-gray-300 text-black rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          required
+          minLength={6}
         />
 
         <button
@@ -87,21 +101,15 @@ export default function AdminLogin() {
           disabled={loading}
           className="cursor-pointer w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition disabled:opacity-60"
         >
-          {loading ? "Signing in..." : "Login"}
+          {loading ? "Registering..." : "Register"}
         </button>
 
-        <div className="text-center space-y-2">
+        <div className="text-center">
           <Link
-            href="/admin/register"
-            className="text-blue-600 hover:text-blue-800 text-sm block"
+            href="/admin/login"
+            className="text-blue-600 hover:text-blue-800 text-sm"
           >
-            Don't have an account? Register
-          </Link>
-          <Link
-            href="/admin/forgot-password"
-            className="text-blue-600 hover:text-blue-800 text-sm block w-full"
-          >
-            Forgot Password?
+            Already have an account? Login
           </Link>
         </div>
       </form>
