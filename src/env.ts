@@ -1,1 +1,1 @@
-export const DOMAIN = "https://api.techguru.com.np";
+export const DOMAIN = "http://localhost:8085";

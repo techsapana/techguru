@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 46, "column": 0}, "map": {"version":3,"sources":["file:///C:/Downloads/techguru-frontend/techguru/src/proxy.ts"],"sourcesContent":["import { NextResponse } from \"next/server\";\r\nimport type { NextRequest } from \"next/server\";\r\n\r\nexport const config = {\r\n  matcher: [\"/admin/:path*\"],\r\n};\r\n\r\nexport function proxy(req: NextRequest) {\r\n  const token = req.cookies.get(\"adminToken\")?.value;\r\n\r\n  if (req.nextUrl.pathname === \"/admin/login\") {\r\n    return NextResponse.next();\r\n  }\r\n\r\n  if (!token) {\r\n    const loginUrl = new URL(\"/admin/login\", req.url);\r\n    return NextResponse.redirect(loginUrl);\r\n  }\r\n\r\n  return NextResponse.next();\r\n}\r\n"],"names":[],"mappings":";;;;;;AAAA;;AAGO,MAAM,SAAS;IACpB,SAAS;QAAC;KAAgB;AAC5B;AAEO,SAAS,MAAM,GAAgB;IACpC,MAAM,QAAQ,IAAI,OAAO,CAAC,GAAG,CAAC,eAAe;IAE7C,IAAI,IAAI,OAAO,CAAC,QAAQ,KAAK,gBAAgB;QAC3C,OAAO,8IAAY,CAAC,IAAI;IAC1B;IAEA,IAAI,CAAC,OAAO;QACV,MAAM,WAAW,IAAI,IAAI,gBAAgB,IAAI,GAAG;QAChD,OAAO,8IAAY,CAAC,QAAQ,CAAC;IAC/B;IAEA,OAAO,8IAAY,CAAC,IAAI;AAC1B"}}]
+}

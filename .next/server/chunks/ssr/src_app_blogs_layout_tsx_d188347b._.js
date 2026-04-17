@@ -1,0 +1,3 @@
+module.exports=[23439,a=>{"use strict";var b=a.i(7997);a.s(["default",0,({children:a})=>(0,b.jsx)("main",{children:a}),"metadata",0,{title:"TechGuru | Blogs"}])}];
+
+//# sourceMappingURL=src_app_blogs_layout_tsx_d188347b._.js.map

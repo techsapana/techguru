@@ -46,6 +46,13 @@ export default function AdminDashboard() {
       href: "/admin/enrollments",
       color: "bg-blue-500",
     },
+    {
+      title: "Manage Videos",
+      description: "Manage platform showcase videos",
+      icon: "🎬",
+      href: "/admin/videos",
+      color: "bg-orange-500",
+    },
   ];
 
   return (

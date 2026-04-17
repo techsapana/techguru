@@ -8,6 +8,7 @@ import BottomSection from "./components/BottomSection";
 import Team from "./components/Team";
 import Faqs from "./components/Faqs";
 import Marquee from "./components/Marquee";
+import VideoShowcase from "./components/VideoShowcase";
 
 export default function Home() {
   useEffect(() => {
@@ -63,6 +64,8 @@ export default function Home() {
         >
           <MainSection />
         </motion.div>
+
+        <VideoShowcase />
 
         <Team />
         <BottomSection />
