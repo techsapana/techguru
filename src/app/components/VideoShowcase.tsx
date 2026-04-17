@@ -108,7 +108,7 @@ export default function VideoShowcase() {
         {isLoading ? (
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="flex gap-4 overflow-hidden">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="shrink-0 w-[280px] aspect-[9/16] rounded-2xl bg-gray-200 animate-pulse" />
+              <div key={i} className="shrink-0 w-[200px] aspect-[9/16] rounded-2xl bg-gray-200 animate-pulse" />
             ))}
           </motion.div>
         ) : videos.length === 0 ? (
@@ -129,7 +129,7 @@ export default function VideoShowcase() {
               {videos.map((video, index) => (
                 <motion.div key={video.id} variants={cardVariants} className="shrink-0 snap-center">
                   <div
-                    className="group relative w-[280px] aspect-[9/16] rounded-2xl overflow-hidden cursor-pointer shadow-lg shadow-blue-100/50 transition-all duration-300 hover:shadow-xl hover:shadow-blue-200/60 hover:scale-[1.02]"
+                    className="group relative w-[200px] aspect-[9/16] rounded-xl overflow-hidden cursor-pointer shadow-md shadow-blue-100/30 transition-all duration-300 hover:shadow-lg hover:shadow-blue-200/40 hover:scale-[1.02]"
                     onClick={() => handleVideoPlay(index)}
                   >
                     <video src={video.videoUrl} className="w-full h-full object-cover" muted loop playsInline preload="metadata" />
@@ -165,7 +165,7 @@ export default function VideoShowcase() {
               ))}
 
               {videos.length > 1 && (
-                <div className="shrink-0 w-[280px] flex items-center justify-center">
+                <div className="shrink-0 w-[200px] flex items-center justify-center">
                   <button
                     onClick={() => handleScroll("right")}
                     className="w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110"
@@ -205,7 +205,7 @@ export default function VideoShowcase() {
                   key={index}
                   onClick={() => {
                     scrollRef.current?.scrollTo({
-                      left: index * 296,
+                      left: index * 216,
                       behavior: "smooth",
                     });
                   }}
