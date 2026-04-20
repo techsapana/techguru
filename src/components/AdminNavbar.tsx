@@ -14,6 +14,7 @@ export default function AdminNavbar() {
 
   const navLinks = [
     { href: "/admin/dashboard", label: "Dashboard", icon: "📊" },
+    { href: "/admin/videos", label: "Videos", icon: "🎥" },
     { href: "/admin/team", label: "Team", icon: "👥" },
     { href: "/admin/courses", label: "Courses", icon: "📚" },
     { href: "/admin/blogs", label: "Blogs", icon: "📝" },
