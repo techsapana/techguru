@@ -98,10 +98,10 @@ export default function VideoShowcase() {
             Fun Learning Experience
           </motion.p>
           <motion.h2 variants={cardVariants} className="mt-4 text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900">
-            Skill-tastic Moments! <span className="text-2xl sm:text-3xl">📸</span>
+            Tech Guru Moments! <span className="text-2xl sm:text-3xl">📸</span>
           </motion.h2>
           <motion.p variants={cardVariants} className="mt-4 text-base sm:text-lg text-slate-600 max-w-3xl mx-auto">
-            Boredom&apos;s out! Fun learning is what Skillshikshya is all about!
+            Boredom&apos;s out! Expert IT learning is what Tech Guru Pvt.Ltd is all about!
           </motion.p>
         </motion.div>
 
