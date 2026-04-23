@@ -32,7 +32,7 @@ export default function VideoShowcase() {
   const [isLoading, setIsLoading] = useState(true);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -62,15 +62,20 @@ export default function VideoShowcase() {
     // Pause all videos except the current one
     videoRefs.current.forEach((v, i) => {
       if (v && i !== index) {
+        v.muted = true;
         v.pause();
       }
     });
     
     // Toggle play/pause for the clicked video
     if (activeIndex === index) {
+      video.muted = true;
+      video.muted = true;
       video.pause();
       setActiveIndex(null);
     } else {
+      video.muted = false;
+      video.volume = 1;
       video.play().catch((error) => {
         console.error("Error playing video:", error);
       });
@@ -148,15 +153,14 @@ export default function VideoShowcase() {
                     className="group relative w-[200px] aspect-[9/16] rounded-xl overflow-hidden cursor-pointer shadow-md shadow-blue-100/30 transition-all duration-300 hover:shadow-lg hover:shadow-blue-200/40 hover:scale-[1.02]"
                     onClick={() => handleVideoPlay(index)}
                   >
-                    <video 
-  ref={(el) => { videoRefs.current[index] = el; }}
-  src={video.videoUrl} 
-  className="w-full h-full object-cover" 
-  muted 
-  loop 
-  playsInline 
-  preload="metadata" 
-/>
+                    <video ref={(el) => { videoRefs.current[index] = el; }}
+                         src={video.videoUrl} 
+                           className="w-full h-full object-cover" 
+                                        muted 
+                        loop 
+                             playsInline 
+                     preload="metadata" 
+ />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                     {activeIndex === index ? null : (
                       <div className="absolute inset-0 flex items-center justify-center">
