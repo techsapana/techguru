@@ -133,7 +133,7 @@ export default function Navbar() {
           initial={{ height: 0, opacity: 0 }}
           animate={{ height: "auto", opacity: 1 }}
           transition={{ duration: 0.3 }}
-          className="md:hidden bg-[#0F172A]/90 backdrop-blur-xl border-t border-white/10"
+className="md:hidden bg-[#0F172A]/98 backdrop-blur-xl border-t border-white/10"
         >
           <div className="flex flex-col px-6 py-4 gap-4">
             {navItems.map((item) => {
