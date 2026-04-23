@@ -49,10 +49,10 @@ export default function Navbar() {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="fixed top-0 left-0 w-full z-50 bg-white/70 backdrop-blur-md border-b"
+      className="fixed top-0 left-0 w-full z-50 bg-[#0F172A]/80 backdrop-blur-xl border-b border-white/10"
     >
       <div className="max-w-7xl mx-auto px-8 py-4 flex items-center justify-between">
-        <Link href="/" className="text-2xl font-bold text-indigo-600 ml-4">
+        <Link href="/" className="text-2xl font-bold text-white ml-4">
           <motion.div
             whileHover={{ scale: 1.1 }}
             transition={{ duration: 0.2 }}
@@ -82,7 +82,7 @@ export default function Navbar() {
                   onClick={(event) =>
                     isHash ? handleHashClick(event, item.href) : setOpen(false)
                   }
-                  className="text-gray-700 font-semibold tracking-tight hover:text-indigo-600 transition-colors duration-200"
+                  className="text-gray-200 font-semibold tracking-tight hover:text-white transition-colors duration-200"
                 >
                   {item.name}
                 </Link>
@@ -122,7 +122,7 @@ export default function Navbar() {
             </motion.div>
           </Link>
 
-          <button onClick={() => setOpen(!open)} className="text-gray-700">
+          <button onClick={() => setOpen(!open)} className="text-gray-200">
             {open ? <X size={26} /> : <Menu size={26} />}
           </button>
         </div>
@@ -133,7 +133,7 @@ export default function Navbar() {
           initial={{ height: 0, opacity: 0 }}
           animate={{ height: "auto", opacity: 1 }}
           transition={{ duration: 0.3 }}
-          className="md:hidden bg-white border-t"
+          className="md:hidden bg-[#0F172A]/90 backdrop-blur-xl border-t border-white/10"
         >
           <div className="flex flex-col px-6 py-4 gap-4">
             {navItems.map((item) => {
@@ -146,7 +146,7 @@ export default function Navbar() {
                   onClick={(event) =>
                     isHash ? handleHashClick(event, item.href) : setOpen(false)
                   }
-                  className="text-gray-700 font-medium"
+                  className="text-gray-200 font-medium hover:text-white"
                 >
                   {item.name}
                 </Link>
