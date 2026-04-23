@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, Variants } from "framer-motion";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { DOMAIN } from "@/src/env";
 import { Play } from "lucide-react";
 
@@ -73,7 +73,7 @@ export default function VideoShowcase() {
       hoveredVideo.play().catch(console.error);
       setActiveIndex(index);
     }
-  }, []);
+  }, [videoRefs, setActiveIndex]); 
 
   const handleMouseLeave = useCallback(() => {
     if (activeIndex !== null) {
