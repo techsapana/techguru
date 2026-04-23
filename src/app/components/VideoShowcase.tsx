@@ -32,7 +32,8 @@ export default function VideoShowcase() {
   const [isLoading, setIsLoading] = useState(true);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -55,33 +56,36 @@ const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
     fetchVideos();
   }, []);
 
-  const handleVideoPlay = (index: number) => {
-    const video = videoRefs.current[index];
-    if (!video) return;
-    
-    // Pause all videos except the current one
-    videoRefs.current.forEach((v, i) => {
-      if (v && i !== index) {
-        v.muted = true;
-        v.pause();
+  const handleMouseEnter = useCallback((index: number) => {
+    // Pause/mute ALL videos first (prevents overlap)
+    videoRefs.current.forEach((video) => {
+      if (video) {
+        video.pause();
+        video.muted = true;
+        video.volume = 0;
       }
     });
-    
-    // Toggle play/pause for the clicked video
-    if (activeIndex === index) {
-      video.muted = true;
-      video.muted = true;
-      video.pause();
-      setActiveIndex(null);
-    } else {
-      video.muted = false;
-      video.volume = 1;
-      video.play().catch((error) => {
-        console.error("Error playing video:", error);
-      });
+
+    const hoveredVideo = videoRefs.current[index];
+    if (hoveredVideo) {
+      hoveredVideo.muted = false;
+      hoveredVideo.volume = 1;
+      hoveredVideo.play().catch(console.error);
       setActiveIndex(index);
     }
-  };
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    if (activeIndex !== null) {
+      const activeVideo = videoRefs.current[activeIndex];
+      if (activeVideo) {
+        activeVideo.pause();
+        activeVideo.muted = true;
+        activeVideo.volume = 0;
+      }
+    }
+    setActiveIndex(null);
+  }, [activeIndex]);
 
   const handleScroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
@@ -151,7 +155,8 @@ const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
                 <motion.div key={video.id} variants={cardVariants} className="shrink-0 snap-center">
                   <div
                     className="group relative w-[200px] aspect-[9/16] rounded-xl overflow-hidden cursor-pointer shadow-md shadow-blue-100/30 transition-all duration-300 hover:shadow-lg hover:shadow-blue-200/40 hover:scale-[1.02]"
-                    onClick={() => handleVideoPlay(index)}
+                    onMouseEnter={() => handleMouseEnter(index)}
+                    onMouseLeave={handleMouseLeave}
                   >
                     <video ref={(el) => { videoRefs.current[index] = el; }}
                          src={video.videoUrl} 
@@ -180,9 +185,10 @@ const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            setActiveIndex(null);
+                            handleMouseLeave();
                           }}
-                          className="w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center"
+                          className="w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition-colors"
+                          aria-label="Stop video"
                         >
                           ×
                         </button>
@@ -192,18 +198,7 @@ const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
                 </motion.div>
               ))}
 
-              {videos.length > 1 && (
-                <div className="shrink-0 w-[200px] flex items-center justify-center">
-                  <button
-                    onClick={() => handleScroll("right")}
-                    className="w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110"
-                  >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </button>
-                </div>
-              )}
+
             </motion.div>
 
             {videos.length > 3 && (
