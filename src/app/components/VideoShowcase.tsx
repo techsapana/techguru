@@ -32,6 +32,7 @@ export default function VideoShowcase() {
   const [isLoading, setIsLoading] = useState(true);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -54,6 +55,12 @@ export default function VideoShowcase() {
     fetchVideos();
   }, []);
 
+  useEffect(() => {
+    if (activeIndex !== null && videoRefs.current[activeIndex]) {
+      videoRefs.current[activeIndex]?.play().catch(() => {});
+    }
+  }, [activeIndex]);
+
   const handleVideoPlay = (index: number) => {
     if (activeIndex === index) {
       setActiveIndex(null);
@@ -61,6 +68,14 @@ export default function VideoShowcase() {
       setActiveIndex(index);
     }
   };
+
+  useEffect(() => {
+    videos.forEach((_, index) => {
+      if (videoRefs.current[index] && index !== activeIndex) {
+        videoRefs.current[index]?.pause();
+      }
+    });
+  }, [activeIndex, videos.length]);
 
   const handleScroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
@@ -126,13 +141,18 @@ export default function VideoShowcase() {
               className="flex gap-4 overflow-x-auto scroll-smooth pb-4 px-4 snap-x snap-mandatory scrollbar-hide"
               style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
-              {videos.map((video, index) => (
+                {videos.map((video, index) => (
                 <motion.div key={video.id} variants={cardVariants} className="shrink-0 snap-center">
                   <div
                     className="group relative w-[200px] aspect-[9/16] rounded-xl overflow-hidden cursor-pointer shadow-md shadow-blue-100/30 transition-all duration-300 hover:shadow-lg hover:shadow-blue-200/40 hover:scale-[1.02]"
                     onClick={() => handleVideoPlay(index)}
                   >
-                    <video src={video.videoUrl} className="w-full h-full object-cover" muted loop playsInline preload="metadata" />
+                    <video 
+                      src={video.videoUrl} 
+                      className="w-full h-full object-cover" 
+                      muted loop playsInline preload="metadata" 
+                      ref={(el) => { videoRefs.current[index] = el; }}
+                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                     {activeIndex === index ? null : (
                       <div className="absolute inset-0 flex items-center justify-center">
@@ -197,7 +217,7 @@ export default function VideoShowcase() {
                   </svg>
                 </button>
               </>
-            )}
+            )}  
 
             <div className="flex justify-center gap-2 mt-6">
               {videos.map((_, index) => (

@@ -49,10 +49,10 @@ export default function Navbar() {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="fixed top-0 left-0 w-full z-50 bg-white/70 backdrop-blur-md border-b"
+      className="fixed top-0 left-0 w-full z-50 bg-linear-to-br from-[#0F172A]/90 via-[#1E293B]/90 to-[#0F172A]/90 backdrop-blur-md border-b border-white/10"
     >
       <div className="max-w-7xl mx-auto px-8 py-4 flex items-center justify-between">
-        <Link href="/" className="text-2xl font-bold text-indigo-600 ml-4">
+        <Link href="/" className="text-2xl font-bold text-white ml-4">
           <motion.div
             whileHover={{ scale: 1.1 }}
             transition={{ duration: 0.2 }}
@@ -79,10 +79,11 @@ export default function Navbar() {
               >
                 <Link
                   href={item.href}
+                  prefetch={!isHash}
                   onClick={(event) =>
                     isHash ? handleHashClick(event, item.href) : setOpen(false)
                   }
-                  className="text-gray-700 font-semibold tracking-tight hover:text-indigo-600 transition-colors duration-200"
+                  className="text-white font-semibold tracking-tight hover:text-blue-400 transition-colors duration-200"
                 >
                   {item.name}
                 </Link>
@@ -92,7 +93,7 @@ export default function Navbar() {
                     hover: { width: "100%" },
                   }}
                   transition={{ duration: 0.3 }}
-                  className="absolute left-0 -bottom-1 h-0.5 w-0 bg-indigo-600"
+                  className="absolute left-0 -bottom-1 h-0.5 w-0 bg-white"
                 />
               </motion.div>
             );
@@ -122,7 +123,7 @@ export default function Navbar() {
             </motion.div>
           </Link>
 
-          <button onClick={() => setOpen(!open)} className="text-gray-700">
+          <button onClick={() => setOpen(!open)} className="text-white">
             {open ? <X size={26} /> : <Menu size={26} />}
           </button>
         </div>
@@ -133,7 +134,7 @@ export default function Navbar() {
           initial={{ height: 0, opacity: 0 }}
           animate={{ height: "auto", opacity: 1 }}
           transition={{ duration: 0.3 }}
-          className="md:hidden bg-white border-t"
+          className="md:hidden bg-linear-to-br from-[#0F172A]/95 via-[#1E293B]/95 to-[#0F172A]/95 border-t border-white/10"
         >
           <div className="flex flex-col px-6 py-4 gap-4">
             {navItems.map((item) => {
@@ -143,10 +144,11 @@ export default function Navbar() {
                 <Link
                   key={item.name}
                   href={item.href}
+                  prefetch={!isHash}
                   onClick={(event) =>
                     isHash ? handleHashClick(event, item.href) : setOpen(false)
                   }
-                  className="text-gray-700 font-medium"
+                  className="text-white font-medium"
                 >
                   {item.name}
                 </Link>
