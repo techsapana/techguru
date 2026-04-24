@@ -8,6 +8,7 @@ import { Play } from "lucide-react";
 type Video = {
   id: number;
   videoUrl: string;
+  description: string;
 };
 
 const containerVariants: Variants = {
@@ -33,7 +34,6 @@ export default function VideoShowcase() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -96,15 +96,6 @@ export default function VideoShowcase() {
       });
     }
   };
-
-  const headlines = [
-    "Math Magic",
-    "Science Secrets",
-    "Coding Adventures",
-    "Art & Creativity",
-    "Music Madness",
-    "Sports Spectacular",
-  ];
 
   return (
     <section id="videos" className="relative overflow-hidden bg-gradient-to-b from-sky-50 via-white to-blue-50 py-20">
@@ -176,8 +167,7 @@ export default function VideoShowcase() {
                     )}
                     <div className="absolute bottom-0 left-0 right-0 p-4">
                       <div className="text-white">
-                        <h3 className="text-lg font-bold leading-tight">{headlines[index % headlines.length]}</h3>
-                        <p className="text-sm text-white/80 mt-1">Watch Now →</p>
+                        <h3 className="text-lg font-bold leading-tight line-clamp-2" title={video.description}>{video.description}</h3>
                       </div>
                     </div>
                     {activeIndex === index && (
