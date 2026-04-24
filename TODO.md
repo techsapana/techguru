@@ -1,4 +1,17 @@
-# Audio Fix for VideoShowcase.tsx
-- [x] Step 1: Apply 4 exact edit_file patches to src/app/components/VideoShowcase.tsx (keep muted attr, add dynamic unmute/volume in handleVideoPlay)
-- [ ] Step 2: Test locally with `bun dev` - verify single video audio on click, mutes on pause/switch/others
-- [ ] Step 3: Complete task with attempt_completion
+# TODO: Add video.description support
+
+## Scope (minimal safe implementation only)
+
+### 1. User Frontend — `src/app/components/VideoShowcase.tsx`
+- [x] Add `description: string` to `Video` type
+- [x] Replace static `headlines[index % headlines.length]` with `video.description`
+- [x] Remove static "Watch Now →" subtitle (replaced by dynamic description)
+- [x] Add `line-clamp-2` and `title` tooltip for readable multi-line descriptions
+
+### 2. Admin Panel — `src/app/admin/(sub pages)/videos/page.tsx`
+- [x] Fix "Update Video" button: change `disabled={submitting || !file}` to `disabled={submitting}`
+- [x] Verify `handleUpdate` already sends `description` and optional `file` correctly
+
+### 3. Validation
+- [x] Build check passes with no TypeScript/JSX errors
+

@@ -10,6 +10,7 @@ import { Upload, Play, Trash2, Edit2, CheckCircle, AlertCircle, Loader2, X, Vide
 interface Video {
   id: number;
   videoUrl: string;
+  description: string;
   thumbnailUrl?: string;
   createdAt?: string;
 }
@@ -30,6 +31,9 @@ export default function AdminVideos() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [deleteModal, setDeleteModal] = useState<{ show: boolean; id: number | null }>({ show: false, id: null });
   const [totalCount, setTotalCount] = useState(0);
+  const [description, setDescription] = useState("");
+  const [bulkDescription, setBulkDescription] = useState("");
+  const [editDescription, setEditDescription] = useState(""); 
 
   const fetchVideos = async () => {
     setLoading(true);
@@ -118,9 +122,14 @@ export default function AdminVideos() {
       showToast("Please select a video", "error");
       return;
     }
+    if (!description.trim()) {
+      showToast("Video description is required", "error");
+      return;
+    }
 
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("description", description);
 
     try {
       setSubmitting(true);
@@ -158,9 +167,14 @@ export default function AdminVideos() {
       showToast("Please select videos", "error");
       return;
     }
+    if (!bulkDescription.trim()) {
+      showToast("Description is required for bulk upload", "error");
+      return;
+    }
 
     const formData = new FormData();
     Array.from(files).forEach((f) => formData.append("files", f));
+    formData.append("description", bulkDescription);
 
     try {
       setSubmitting(true);
@@ -196,14 +210,16 @@ export default function AdminVideos() {
       showToast("No video selected", "error");
       return;
     }
-
-    if (!file) {
-      showToast("Please select a new video file to replace", "error");
+    if (!editDescription.trim()) {
+      showToast("Video description is required", "error");
       return;
     }
 
     const formData = new FormData();
-    formData.append("file", file);
+    if (file) {
+      formData.append("file", file);
+    }
+    formData.append("description", editDescription);
 
     try {
       setSubmitting(true);
@@ -259,15 +275,19 @@ export default function AdminVideos() {
 
   const handleEdit = (v: Video) => {
     setSelectedVideo(v);
+    setEditDescription(v.description);
     setFile(null);
     setPreviewUrl(v.videoUrl);
   };
 
   const clearForm = () => {
     setSelectedVideo(null);
+    setEditDescription("");
     setFile(null);
     setPreviewUrl(null);
     setFiles(null);
+    setDescription("");
+    setBulkDescription("");
   };
 
   return (
@@ -379,6 +399,20 @@ export default function AdminVideos() {
                   </label>
                 </div>
 
+                <div className="mt-4">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Video Description <span className="text-red-500">*</span>
+                  </label>
+                  <textarea
+                    value={editDescription}
+                    onChange={(e) => setEditDescription(e.target.value)}
+                    placeholder="Enter new video description..."
+                    rows={3}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 resize-vertical"
+                    required
+                  />
+                </div>
+
                 {submitting && (
                   <div className="mb-3">
                     <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
@@ -397,7 +431,7 @@ export default function AdminVideos() {
                 <div className="flex gap-2">
                   <button
                     onClick={handleUpdate}
-                    disabled={submitting || !file}
+                    disabled={submitting}
                     className="flex-1 bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
                     {submitting ? (
@@ -465,6 +499,20 @@ export default function AdminVideos() {
                     Selected: {file.name}
                   </p>
                 )}
+
+                <div className="mt-4">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Video Description <span className="text-red-500">*</span>
+                  </label>
+                  <textarea
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    placeholder="Enter video description..."
+                    rows={3}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-vertical"
+                    required
+                  />
+                </div>
 
                 {submitting && (
                   <div className="mt-4">
@@ -537,7 +585,21 @@ export default function AdminVideos() {
                 <p className="text-sm text-gray-600 mt-2">
                   {files.length} video(s) selected
                 </p>
-              )}
+                )}
+
+                <div className="mt-4">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Shared Description for all videos <span className="text-red-500">*</span>
+                  </label>
+                  <textarea
+                    value={bulkDescription}
+                    onChange={(e) => setBulkDescription(e.target.value)}
+                    placeholder="Enter description (will apply to all selected videos)..."
+                    rows={3}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 resize-vertical"
+                    required
+                  />
+                </div>
 
               {submitting && (
                 <div className="mt-4">
@@ -612,6 +674,9 @@ export default function AdminVideos() {
                     <div className="p-3">
                       <p className="text-xs text-gray-500 truncate">
                         {video.videoUrl.split("/").pop()}
+                      </p>
+                      <p className="text-xs text-gray-600 line-clamp-2 mt-1" title={video.description}>
+                        {video.description}
                       </p>
 
                       <div className="flex gap-2 mt-3">
