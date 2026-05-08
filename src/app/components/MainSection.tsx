@@ -19,6 +19,7 @@ interface Course {
 interface Partner {
   id: number;
   imageUrl: string;
+  description?: string;
 }
 
 const MainSection = () => {
@@ -176,12 +177,12 @@ const MainSection = () => {
           whileInView="show"
           viewport={{ once: true, amount: 0.2 }}
           variants={containerVariants}
-          className="mb-2"
+          className="mb-16"
         >
           <motion.h2
             variants={itemVariants}
             id="partners"
-            className="scroll-mt-30 text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-8 text-center"
+            className="scroll-mt-30 text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4 text-center"
           >
             Our <span className="text-blue-700">Partners</span>
           </motion.h2>
@@ -207,7 +208,6 @@ const MainSection = () => {
             </motion.p>
           ) : partners.length <= 5 ? (
             <motion.div
-              variants={containerVariants}
               className="rounded-2xl border border-slate-200/70 bg-white/90 p-6 md:p-8 flex flex-wrap justify-center gap-6 max-w-7xl mx-auto"
             >
               {partners.map((partner) => (
@@ -215,35 +215,45 @@ const MainSection = () => {
                   key={partner.id}
                   variants={itemVariants}
                   whileHover={{ y: -4 }}
-                  className="flex items-center justify-center w-48 h-32 bg-white/95 border border-slate-200 rounded-2xl shadow-sm p-2 hover:shadow-md hover:border-sky-300 transition-all duration-300 group"
+                  className="flex flex-col items-center justify-center w-56 p-6 bg-white/95 border border-slate-200 rounded-2xl shadow-sm hover:shadow-md hover:border-sky-300 transition-all duration-300 group"
                 >
                   <Image
                     src={partner.imageUrl}
-                    alt="Partner"
+                    alt={partner.description || "Partner"}
                     width={160}
                     height={80}
-                    className="max-w-full max-h-20 object-contain grayscale rounded-xl group-hover:grayscale-0 transition-all duration-300"
+                    className="max-w-full h-20 object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
                   />
+                  {partner.description && (
+                    <p className="mt-4 text-sm text-slate-600 text-center line-clamp-3">
+                      {partner.description}
+                    </p>
+                  )}
                 </motion.div>
               ))}
             </motion.div>
           ) : (
-            <div className="relative w-full overflow-hidden rounded-2xl border border-slate-200/70 bg-linear-to-r from-sky-50 via-white to-sky-50 py-8 px-3">
+            <div className="relative w-full overflow-hidden rounded-2xl border border-slate-200/70 bg-linear-to-r from-sky-50 via-white to-sky-50 py-10 px-3">
               <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-linear-to-r from-sky-50 to-transparent z-10" />
               <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-linear-to-l from-sky-50 to-transparent z-10" />
-              <div className="flex gap-6 animate-scroll">
+              <div className="flex gap-8 animate-scroll">
                 {[...partners, ...partners, ...partners].map((partner, i) => (
                   <div
                     key={`${partner.id}-${i}`}
-                    className="flex items-center justify-center w-48 h-32 bg-white/95 border border-slate-200 rounded-2xl shadow-sm p-2 shrink-0 hover:shadow-md hover:border-sky-300 transition-all duration-300 group"
+                    className="flex flex-col items-center justify-center w-64 p-6 bg-white/95 border border-slate-200 rounded-2xl shadow-sm shrink-0 hover:shadow-md hover:border-sky-300 transition-all duration-300 group"
                   >
                     <Image
                       src={partner.imageUrl}
-                      alt="Partner"
+                      alt={partner.description || "Partner"}
                       width={160}
                       height={80}
-                      className="max-w-full max-h-20 object-contain grayscale rounded-xl group-hover:grayscale-0 transition-all duration-300"
+                      className="max-w-full h-20 object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
                     />
+                    {partner.description && (
+                      <p className="mt-4 text-sm text-slate-600 text-center line-clamp-2">
+                        {partner.description}
+                      </p>
+                    )}
                   </div>
                 ))}
               </div>

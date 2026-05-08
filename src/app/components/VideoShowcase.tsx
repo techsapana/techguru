@@ -73,7 +73,7 @@ export default function VideoShowcase() {
       hoveredVideo.play().catch(console.error);
       setActiveIndex(index);
     }
-  }, [videoRefs, setActiveIndex]); 
+  }, [videoRefs, setActiveIndex]);
 
   const handleMouseLeave = useCallback(() => {
     if (activeIndex !== null) {
@@ -114,7 +114,7 @@ export default function VideoShowcase() {
             Fun Learning Experience
           </motion.p>
           <motion.h2 variants={cardVariants} className="mt-4 text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900">
-            Tech Guru Moments! <span className="text-2xl sm:text-3xl">📸</span>
+            <span className="text-blue-600">Tech Guru</span> Moments! <span className="text-2xl sm:text-3xl">📸</span>
           </motion.h2>
           <motion.p variants={cardVariants} className="mt-4 text-base sm:text-lg text-slate-600 max-w-3xl mx-auto">
             Boredom&apos;s out! Fun learning is what Techguru is all about!
@@ -150,13 +150,13 @@ export default function VideoShowcase() {
                     onMouseLeave={handleMouseLeave}
                   >
                     <video ref={(el) => { videoRefs.current[index] = el; }}
-                         src={video.videoUrl} 
-                           className="w-full h-full object-cover" 
-                                        muted 
-                        loop 
-                             playsInline 
-                     preload="metadata" 
- />
+                      src={video.videoUrl}
+                      className="w-full h-full object-cover"
+                      muted
+                      loop
+                      playsInline
+                      preload="metadata"
+                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                     {activeIndex === index ? null : (
                       <div className="absolute inset-0 flex items-center justify-center">
