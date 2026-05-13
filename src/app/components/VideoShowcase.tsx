@@ -106,7 +106,7 @@ export default function VideoShowcase() {
         <motion.div
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.01 }}
           variants={containerVariants}
           className="mb-12 text-center"
         >
@@ -137,7 +137,7 @@ export default function VideoShowcase() {
               ref={scrollRef}
               initial="hidden"
               whileInView="show"
-              viewport={{ once: true, amount: 0.2 }}
+              viewport={{ once: true, amount: 0.01 }}
               variants={containerVariants}
               className="flex gap-4 overflow-x-auto scroll-smooth pb-4 px-4 snap-x snap-mandatory scrollbar-hide"
               style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
